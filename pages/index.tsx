@@ -1,7 +1,7 @@
 import { useState } from "react";
 interface Variable {
-name: string;
-example: string;
+keyword: string;
+placeholder: string;
 value: string;
 }
 export default function Home() {
@@ -11,7 +11,9 @@ const [generatedImages, setGeneratedImages] = useState([]);
 async function fetchVariables() {
   const res = await fetch(`/api/variables?keyword=${keyword}`);
   const data = await res.json();
-  setVariables(data.variables);
+  const dataVariables = data.variables;
+  const outputArray = JSON.parse(dataVariables);
+  setVariables(outputArray);
 }
 async function fetchGeneratedImages(variables: Variable[]) {
   const res = await fetch("/api/images", {
@@ -35,10 +37,10 @@ return (
     {/* 変数入力フォーム */}
     {variables.map((variable, index) => (
       <div key={index}>
-        <label>{variable.name}</label>
+        <label>{variable.keyword}</label>
         <input
           type="text"
-          placeholder={variable.example}
+          placeholder={variable.placeholder}
           value={variable.value}
           onChange={(e) => {
             const updatedVariables = [...variables];
