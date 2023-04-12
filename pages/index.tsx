@@ -1,87 +1,64 @@
-import { useState } from 'react';
-import axios from 'axios';
-
-type Variable = {
-  name: string;
-  example: string;
-};
-
-type Image = {
-  url: string;
-};
-
+import { useState } from "react";
+interface Variable {
+name: string;
+example: string;
+value: string;
+}
 export default function Home() {
-  const [abstractKeyword, setAbstractKeyword] = useState('');
-  const [variables, setVariables] = useState<Variable[]>([]);
-  const [imageList, setImageList] = useState<Image[]>([]);
-
-  const handleSubmitAbstractKeyword = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      const res = await axios.get('/api/variables', {
-        params: {
-          abstractKeyword,
-        },
-      });
-      setVariables(res.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleSubmitVariables = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const variableValues = Array.from(e.currentTarget.elements)
-      .filter((elem) => elem.tagName === 'INPUT')
-      .map((elem) => (elem as HTMLInputElement).value);
-    try {
-      const res = await axios.get('/api/images', {
-        params: {
-          variables: JSON.stringify(variableValues),
-        },
-      });
-      setImageList(res.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  return (
-    <div>
-      <form onSubmit={handleSubmitAbstractKeyword}>
-        <div>
-          <label htmlFor="abstractKeyword">Abstract Keyword</label>
-          <input
-            type="text"
-            name="abstractKeyword"
-            id="abstractKeyword"
-            value={abstractKeyword}
-            onChange={(e) => setAbstractKeyword(e.target.value)}
-          />
-        </div>
-        <button type="submit">Submit</button>
-      </form>
-
-      {variables.length > 0 && (
-        <form onSubmit={handleSubmitVariables}>
-          {variables.map((variable) => (
-            <div key={variable.name}>
-              <label htmlFor={variable.name}>{variable.name}</label>
-              <p>{variable.example}</p>
-              <input type="text" name={variable.name} id={variable.name} />
-            </div>
-          ))}
-          <button type="submit">Submit</button>
-        </form>
-      )}
-
-      {imageList.length > 0 && (
-        <div>
-          {imageList.map((image) => (
-            <img key={image.url} src={image.url} alt="generated image" />
-          ))}
-        </div>
-      )}
-    </div>
-  );
+const [keyword, setKeyword] = useState("");
+const [variables, setVariables] = useState<Variable[]>([]);
+// const [generatedImages, setGeneratedImages] = useState([]);
+async function fetchVariables() {
+  const res = await fetch(`/api/variables?keyword=${keyword}`);
+  const data = await res.json();
+  setVariables(data.variables);
+}
+// async function fetchGeneratedImages(variables: Variable[]) {
+//   const res = await fetch("/api/generate-images", {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify({ variables }),
+//   });
+//   const data = await res.json();
+//   setGeneratedImages(data.images);
+// }
+return (
+  <div>
+    {/* 抽象キーワード入力フォーム */}
+    <input
+      type="text"
+      placeholder="抽象キーワードを入力してください"
+      value={keyword}
+      onChange={(e) => setKeyword(e.target.value)}
+    />
+    <button onClick={fetchVariables}>サブミット</button>
+    {/* 変数入力フォーム */}
+    {variables.map((variable, index) => (
+      <div key={index}>
+        <label>{variable.name}</label>
+        <input
+          type="text"
+          placeholder={variable.example}
+          value={variable.value}
+          onChange={(e) => {
+            const updatedVariables = [...variables];
+            updatedVariables[index].value = e.target.value;
+            setVariables(updatedVariables);
+          }}
+        />
+      </div>
+    ))}
+    {/* {variables.length > 0 && (
+      <button onClick={() => fetchGeneratedImages(variables)}>
+        画像を生成
+      </button>
+    )} */}
+    {/* 生成画像リスト */}
+    {/* {generatedImages.map((image: {url: string}, index) => (
+      <div key={index}>
+        <img src={image.url} alt={`生成画像${index + 1}`} />
+      </div>
+    ))} */}
+  </div>
+);
 }
