@@ -19,7 +19,7 @@ async function fetchGeneratedImages(variables: Variable[]) {
   const res = await fetch("/api/images", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ variables }),
+    body: JSON.stringify({ variables, keyword }),
   });
   const data = await res.json();
   setGeneratedImages(data.images);

@@ -11,17 +11,21 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+
+  const abstractInput = req.body.keyword;
+
   const { variables } = req.body;
 
   const promptArray = variables.map((variable: { value: string; }) => variable.value);
   const promptText = promptArray.join(",");
 
-  console.log(promptText);
+  const promptInput = `${abstractInput},${promptText}`;
+  console.log(promptInput);
 
   // 画像生成AIを使って画像を生成する処理を実装します（モックデータを返す）
 
   const response = await openai.createImage({
-    prompt: promptText,
+    prompt: promptInput,
     n: 4,
     size: "512x512",
     response_format: "url"
