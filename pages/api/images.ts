@@ -28,7 +28,7 @@ export default async function handler(
       // JSON形式に変換するための指示を含むシステムのメッセージと、OCRで取得したテキストを含むユーザーのメッセージを送信する
       {
         role: "system",
-        content:"[画像の抽象的な情報]と[属性]を基に画像生成AIで画像を生成したい。\n画像を生成するためのプロンプトを英語で出力してください。\n\n*[出力フォーマット]で出力してください。\n* 出力結果には[出力フォーマット]という文字は含めないでください。\n* 出力結果は[出力フォーマット]の結果のみ返してください。\n\n[出力フォーマット] {Image abstract information},{attribute1},{attribute2},...,{attributeN}"
+        content:"[画像の抽象的な情報]と[属性]を基に画像生成AIで画像を生成したい。\n画像を生成するためのプロンプトを英語で出力してください。\n\n*[出力フォーマット]で出力してください。\n* 出力結果には[出力フォーマット]という文字は含めないでください。\n* 出力結果は[出力フォーマット]の結果のみ返してください。\n\n[出力フォーマット] {Image abstract information},{attribute_name : value}, {attribute_name : value},..."
       },
       { role: "user", content: `[画像の抽象的な情報]=${abstractInputKeyword},\n [属性]=${formattedStringAttributes}` },
     ],
