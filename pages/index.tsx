@@ -12,6 +12,7 @@ async function fetchVariables() {
   const res = await fetch(`/api/variables?keyword=${keyword}`);
   const data = await res.json();
   const dataVariables = data.variables;
+  // gptから返ってきたデータは文字列のため、配列に変換する
   const outputArray = JSON.parse(dataVariables);
   if (outputArray) {
     for (const variable of outputArray) {
@@ -34,7 +35,7 @@ return (
     {/* 抽象キーワード入力フォーム */}
     <input
       type="text"
-      placeholder="抽象キーワードを入力してください"
+      placeholder="作成したい画像イメージを入力してください"
       value={keyword}
       onChange={(e) => setKeyword(e.target.value)}
     />
