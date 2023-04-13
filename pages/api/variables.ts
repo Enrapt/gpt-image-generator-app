@@ -16,7 +16,6 @@ export default async function handler(
   const response = await openai.createChatCompletion({
     model: "gpt-3.5-turbo",
     messages: [
-      // JSON形式に変換するための指示を含むシステムのメッセージと、OCRで取得したテキストを含むユーザーのメッセージを送信する
       {
         role: "system",
         content:"[画像の抽象的な情報]をより具体化するために必要な情報をできるだけ多く洗い出して、\n*コードブロックなし\n*[出力フォーマット]で出力してください。\n* 出力結果には[出力フォーマット][出力結果]という文字は含めないでください。\n* 出力結果は[出力フォーマット]の結果のみ返してください。\n\n[出力フォーマット]\n[{\"attribute_name\": \"スタイル\", \"description\": \"写真、デジタルアート、油絵など\"},\n{ \"attribute_name\": \"構図\", \"description\": \"俯瞰、正面図、斜めから見た図など\" },\n{ \"attribute_name\": \"背景\", \"description\": \"森、山、海、湖、街並みなど\"}\n...]"

@@ -32,14 +32,14 @@ async function fetchGeneratedImages(variables: Variable[]) {
 }
 return (
   <div>
-    {/* 抽象キーワード入力フォーム */}
+    {/* 画像イメージ入力フォーム */}
     <input
       type="text"
       placeholder="作成したい画像イメージを入力してください"
       value={keyword}
       onChange={(e) => setKeyword(e.target.value)}
     />
-    <button onClick={fetchVariables}>サブミット</button>
+    <button onClick={fetchVariables}>送信</button>
     {/* 変数入力フォーム */}
     {variables.map((variable, index) => (
       <div key={index}>
