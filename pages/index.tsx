@@ -31,7 +31,7 @@ async function fetchGeneratedImages(variables: Variable[]) {
   setGeneratedImages(data.images);
 }
 return (
-  <div>
+  <div className="container">
     {/* 画像イメージ入力フォーム */}
     <input
       type="text"
@@ -62,11 +62,13 @@ return (
       </button>
     )}
     {/* 生成画像リスト */}
-    {generatedImages.map((image: {url: string}, index) => (
-      <div key={index}>
-        <img src={image.url} alt={`生成画像${index + 1}`} />
-      </div>
-    ))}
+    <div className="image-list">
+      {generatedImages.map((image: {url: string}, index) => (
+        <div key={index}>
+          <img src={image.url} alt={`生成画像${index + 1}`} />
+        </div>
+      ))}
+    </div>
   </div>
 );
 }

@@ -14,20 +14,24 @@ export default async function handler(
     // openAIでDALL-E2に渡すプロンプト生成
     const abstractInputKeyword = req.body.keyword;
     const attributeVariables = req.body.variables;
-    let formattedStringAttributes = "";
+    const formattedStringAttributes = attributeVariables.map((attribute: { attribute_name: string; value: string; }) => `${attribute.attribute_name}:${attribute.value}`).join("\n");
 
-    for (const attribute of attributeVariables) {
-      formattedStringAttributes += `${attribute.attribute_name}:${attribute.value},`
-    }
-
+    console.log({abstractInputKeyword});
     console.log({formattedStringAttributes});
 
     const responseGPT = await openai.createChatCompletion({
     model: "gpt-3.5-turbo",
+    temperature: 0.7,
     messages: [
       {
         role: "system",
-        content:"[画像の抽象的な情報]と[属性]を基に画像生成AIで画像を生成したい。\n画像を生成するためのプロンプトを英語で出力してください。\n\n*[出力フォーマット]で出力してください。\n* 出力結果には[出力フォーマット]という文字は含めないでください。\n* 出力結果は[出力フォーマット]の結果のみ返してください。\n\n[出力フォーマット] {Image abstract information},{attribute_name : value}, {attribute_name : value},..."
+        content:`[画像の抽象的な情報]と[属性]を基に画像生成AIで画像を生成したいです。
+        画像を生成するためのプロンプト[出力フォーマット]のみを英語で出力してください。
+        余計なラベルや補足は出力しないでください。
+
+        [出力フォーマット]
+        {Description of the image},{keyword1}, {keyword2},..., {keywordN}
+        `
       },
       { role: "user", content: `[画像の抽象的な情報]=${abstractInputKeyword},\n [属性]=${formattedStringAttributes}` },
     ],

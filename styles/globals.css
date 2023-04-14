@@ -87,12 +87,41 @@ body {
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+}
+
+.container {
+  max-width: var(--max-width);
+  margin: 1rem auto;
+  padding: 0 1rem;
+}
+
+input {
+  color: inherit;
+  background-color: transparent;
+  width: 100%;
+  margin: 1rem auto;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.image-list {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #228bc8;
+  border: 1px solid #228bc8;
+  border-radius: 0.5rem;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 1rem;
+  margin: 1rem auto;
 }
 
 a {
